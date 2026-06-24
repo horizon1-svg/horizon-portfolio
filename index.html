@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HORIZON | Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..12,400;0,6..12,700;1,6..12,700;1,6..12,900&family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <canvas id="three-canvas" aria-hidden="true"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <nav class="nav" id="nav" role="navigation" aria-label="القائمة الرئيسية">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">HORIZON</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#latest" class="nav-link">آخر الأعمال</a>
+        <a href="#hot" class="nav-link">HOT</a>
+        <a href="#ads" class="nav-link">إعلانات</a>
+        <a href="#banners" class="nav-link">بانرات</a>
+        <a href="#discord" class="nav-link">بكج دسكورد</a>
+        <a href="#extra" class="nav-link">أعمال إضافية</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="فتح القائمة" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="hero-content">
+        <span class="hero-label">PORTFOLIO</span>
+        <h1 class="hero-title" data-text="HORIZON">HORIZON</h1>
+        <p class="hero-desc">تصاميم عصرية &ndash; هوية بصرية تترك أثرها</p>
+        <div class="hero-cta">
+          <a href="#latest" class="btn-glass">استعرض الأعمال</a>
+        </div>
+      </div>
+      <div class="hero-scroll" aria-hidden="true">
+        <span>&darr;</span>
+      </div>
+    </section>
+
+    <section class="section" id="latest">
+      <div class="section-glass">
+        <div class="section-header">
+          <span class="section-number">01</span>
+          <h2 class="section-title">آخر الأعمال</h2>
+          <p class="section-desc">أحدث التصاميم والمشاريع</p>
+        </div>
+        <div class="masonry" data-folder="اخر الاعمال"></div>
+      </div>
+    </section>
+
+    <section class="section" id="hot">
+      <div class="section-glass">
+        <div class="section-header">
+          <span class="section-number">02</span>
+          <h2 class="section-title">HOT</h2>
+          <p class="section-desc">التصاميم الأكثر تفاعلاً — اللي عجبت الزوار</p>
+        </div>
+        <div class="masonry" id="hotMasonry"></div>
+        <div class="hot-empty" id="hotEmpty">
+          <span class="hot-empty-icon" aria-hidden="true">&hearts;</span>
+          <p>لا توجد تصاميم في HOT بعد</p>
+          <p class="hot-empty-hint">اضغط على &hearts; أي تصميم يظهر هنا</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ads">
+      <div class="section-glass">
+        <div class="section-header">
+          <span class="section-number">03</span>
+          <h2 class="section-title">إعلانات</h2>
+          <p class="section-desc">تصاميم إعلانية جذابة ومنسقة</p>
+        </div>
+        <div class="masonry" data-folder="ads"></div>
+      </div>
+    </section>
+
+    <section class="section" id="banners">
+      <div class="section-glass">
+        <div class="section-header">
+          <span class="section-number">04</span>
+          <h2 class="section-title">بانرات يوتيوب</h2>
+          <p class="section-desc">تصاميم بانرات احترافية لمنصات اليوتيوب</p>
+        </div>
+        <div class="masonry" data-folder="بانر يوتويب"></div>
+      </div>
+    </section>
+
+    <section class="section" id="discord">
+      <div class="section-glass">
+        <div class="section-header">
+          <span class="section-number">05</span>
+          <h2 class="section-title">بكج دسكورد</h2>
+          <p class="section-desc">بكجات وأدوات لديسكورد</p>
+        </div>
+        <div class="masonry" data-folder="بكج دسكورد"></div>
+      </div>
+    </section>
+
+    <section class="section" id="extra">
+      <div class="section-glass">
+        <div class="section-header">
+          <span class="section-number">06</span>
+          <h2 class="section-title">أعمال إضافية</h2>
+          <p class="section-desc">مجموعة متنوعة من التصاميم</p>
+        </div>
+        <div class="masonry" data-folder="extra"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-glass">
+      <div class="footer-inner">
+        <h3 class="footer-logo">HORIZON</h3>
+        <p class="footer-text">تصاميم تمزج بين الإبداع والاحترافية</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/hz.dzy?igsh=MXh0eWZmdmVtNGMxaQ==" target="_blank" rel="noopener" class="social-link" aria-label="Instagram">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://youtube.com/@horizon_x0?si=WDsfZ2zLhN4UKEIa" target="_blank" rel="noopener" class="social-link" aria-label="YouTube">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </a>
+          <a href="https://x.com" target="_blank" rel="noopener" class="social-link" aria-label="X (تويتر)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768M17.232 4l-6.768 6.768"/></svg>
+          </a>
+          <a href="mailto:samifares744@gmail.com" class="social-link" aria-label="إرسال بريد إلكتروني">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        </div>
+        <p class="footer-copy">samifares744@gmail.com &bull; 2026 HORIZON</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="معاينة الصورة" aria-modal="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="إغلاق" tabindex="0">&times;</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="السابق" tabindex="0">&lsaquo;</button>
+    <img class="lightbox-img" id="lightboxImg" alt="" />
+    <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="التالي" tabindex="0">&rsaquo;</button>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
