@@ -64,7 +64,10 @@ window.addEventListener('scroll', () => {
 
 /* ===== IMAGE LOADING ===== */
 const FOLDERS = {
-  'اخر الاعمال': [
+      'Untitled25_20260709234538.webp',
+    'Untitled27_20260710000430.webp',
+    'Untitled28_20260712111947.webp',
+  
     'file_0000000004587230a6cbeb50dfa971c8.webp',
     'file_00000000fa2c71f48b3eb073d0500859.webp',
     'Untitled17.webp',
@@ -81,6 +84,7 @@ const FOLDERS = {
     '1742941583671.webp',
     '1743050224018.webp',
     '1743082250172.webp',
+    'quality_restoration_20250522130136873.webp',
   ],
   'بانر يوتويب': [
     '1742591532916.webp',
