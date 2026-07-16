@@ -104,6 +104,8 @@ const FOLDERS = {
     '1740872762664.webp',
     '1741038167931.webp',
     '1741445236768.webp',
+    'quality_restoration_20250709234300067.webp',
+    'quality_restoration_20250716144642771.webp',
     'Untitled147_20250913133910.webp',
     'Untitled150_20251004151922.webp',
     'Untitled25_20250512205430.webp',
