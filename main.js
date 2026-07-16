@@ -64,10 +64,10 @@ window.addEventListener('scroll', () => {
 
 /* ===== IMAGE LOADING ===== */
 const FOLDERS = {
-      'Untitled25_20260709234538.webp',
+  'اخر الاعمال': [
+    'Untitled25_20260709234538.webp',
     'Untitled27_20260710000430.webp',
     'Untitled28_20260712111947.webp',
-  
     'file_0000000004587230a6cbeb50dfa971c8.webp',
     'file_00000000fa2c71f48b3eb073d0500859.webp',
     'Untitled17.webp',
@@ -162,7 +162,7 @@ function createHeartButton(path, liked = false) {
 }
 
 /* ===== HOT SECTION MANAGEMENT ===== */
-let hotItemData = {} // hotItemData[path] = { folder, file }
+let hotItemData = {}
 
 function addToHot(path) {
   const data = hotItemData[path]
@@ -170,15 +170,10 @@ function addToHot(path) {
   const hotContainer = document.getElementById('hotMasonry')
   const empty = document.getElementById('hotEmpty')
   if (!hotContainer) return
-
-  // Check if already exists
   if (hotContainer.querySelector(`[data-path="${CSS.escape(path)}"]`)) return
-
   const item = createMasonryItem(data.folder, data.file, hotContainer.children.length, true)
   item.dataset.path = path
   hotContainer.appendChild(item)
-
-  // Reveal animation after append
   requestAnimationFrame(() => item.classList.add('reveal'))
   if (empty) empty.style.display = 'none'
 }
@@ -195,8 +190,6 @@ function removeFromHot(path) {
 function initHotSection() {
   const hotContainer = document.getElementById('hotMasonry')
   if (!hotContainer) return
-
-  // Load liked images from all folders
   Object.keys(FOLDERS).forEach((folder) => {
     FOLDERS[folder].forEach((file) => {
       const path = `images/${folder}/${file}`
@@ -208,7 +201,6 @@ function initHotSection() {
       }
     })
   })
-
   const empty = document.getElementById('hotEmpty')
   if (empty && hotContainer.children.length > 0) empty.style.display = 'none'
 }
@@ -225,7 +217,6 @@ function createMasonryItem(folder, file, index, liked = false, imageList = null)
   img.alt = `${SECTION_NAMES[folder] || 'تصميم من HORIZON'}`
   item.dataset.path = path
 
-  // Image list for lightbox navigation (null = single image)
   const navImages = imageList || [file]
   const navIndex = imageList ? imageList.indexOf(file) : 0
 
@@ -249,13 +240,11 @@ function createMasonryItem(folder, file, index, liked = false, imageList = null)
 
   item.appendChild(img)
 
-  // Keyboard
   item.tabIndex = 0
   item.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { e.preventDefault(); openLightbox(folder, navImages, navIndex) }
   })
 
-  // Overlays
   const shine = document.createElement('div')
   shine.className = 'masonry-shine'
   item.appendChild(shine)
@@ -278,7 +267,6 @@ function createMasonryItem(folder, file, index, liked = false, imageList = null)
   label.setAttribute('aria-hidden', 'true')
   item.appendChild(label)
 
-  // Heart
   const heartBtn = createHeartButton(path, liked)
   item.appendChild(heartBtn)
 
@@ -329,148 +317,71 @@ function observeMasonry() {
 }
 
 /* ===== LIGHTBOX ===== */
-let lightboxData = { images: [], current: 0 }
 const lightbox = document.getElementById('lightbox')
 const lightboxImg = document.getElementById('lightboxImg')
 const lightboxClose = document.getElementById('lightboxClose')
 const lightboxPrev = document.getElementById('lightboxPrev')
 const lightboxNext = document.getElementById('lightboxNext')
-let lastFocusedElement = null
+
+let lightboxCurrentFolder = ''
+let lightboxImages = []
+let lightboxIndex = 0
 
 function openLightbox(folder, images, index) {
-  lastFocusedElement = document.activeElement
-  lightboxData = { folder, images, current: index }
-  updateLightbox()
+  lightboxCurrentFolder = folder
+  lightboxImages = images
+  lightboxIndex = index
+
+  lightboxImg.src = `images/${folder}/${images[index]}`
+  lightboxImg.alt = `${SECTION_NAMES[folder] || 'تصميم من HORIZON'}`
   lightbox.classList.add('open')
   document.body.style.overflow = 'hidden'
-
-  // Focus close button for keyboard users
-  setTimeout(() => lightboxClose.focus(), 100)
+  updateLightboxNav()
 }
 
-function updateLightbox() {
-  const { folder, images, current } = lightboxData
-  lightboxImg.src = `images/${folder}/${images[current]}`
-  lightboxImg.alt = `${SECTION_NAMES[folder] || 'تصميم من HORIZON'} #${current + 1}`
-  lightboxPrev.style.display = images.length > 1 ? 'flex' : 'none'
-  lightboxNext.style.display = images.length > 1 ? 'flex' : 'none'
+function updateLightboxNav() {
+  lightboxPrev.style.display = lightboxImages.length > 1 ? 'flex' : 'none'
+  lightboxNext.style.display = lightboxImages.length > 1 ? 'flex' : 'none'
 }
 
 function closeLightbox() {
   lightbox.classList.remove('open')
   document.body.style.overflow = ''
+}
 
-  // Return focus to triggering element
-  if (lastFocusedElement && lastFocusedElement.focus) {
-    lastFocusedElement.focus()
-  }
-  lastFocusedElement = null
+function prevImage() {
+  lightboxIndex = (lightboxIndex - 1 + lightboxImages.length) % lightboxImages.length
+  lightboxImg.src = `images/${lightboxCurrentFolder}/${lightboxImages[lightboxIndex]}`
+}
+
+function nextImage() {
+  lightboxIndex = (lightboxIndex + 1) % lightboxImages.length
+  lightboxImg.src = `images/${lightboxCurrentFolder}/${lightboxImages[lightboxIndex]}`
 }
 
 lightboxClose.addEventListener('click', closeLightbox)
-
-lightbox.addEventListener('click', (e) => {
-  if (e.target === lightbox) closeLightbox()
-})
+lightboxPrev.addEventListener('click', prevImage)
+lightboxNext.addEventListener('click', nextImage)
 
 document.addEventListener('keydown', (e) => {
   if (!lightbox.classList.contains('open')) return
-
-  if (e.key === 'Escape') {
-    closeLightbox()
-    return
-  }
-
-  // Focus trap: Tab cycling within lightbox
-  if (e.key === 'Tab') {
-    const focusable = lightbox.querySelectorAll('button, [tabindex]:not([tabindex="-1"])')
-    const first = focusable[0]
-    const last = focusable[focusable.length - 1]
-
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault()
-      last.focus()
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault()
-      first.focus()
-    }
-    return
-  }
-
-  // RTL navigation: ArrowRight is "prev" in RTL (goes right to go back in time)
-  // Actually in RTL, right-to-left reading means right is "previous" and left is "next"
-  // So ArrowLeft (going left in RTL) = next, ArrowRight = prev
-  if (e.key === 'ArrowLeft') navigateLightbox(1)  // next (go forward)
-  if (e.key === 'ArrowRight') navigateLightbox(-1) // prev (go backward)
+  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'ArrowLeft') prevImage()
+  if (e.key === 'ArrowRight') nextImage()
 })
 
-lightboxPrev.addEventListener('click', () => navigateLightbox(-1))
-lightboxNext.addEventListener('click', () => navigateLightbox(1))
-
-function navigateLightbox(dir) {
-  const { images } = lightboxData
-  lightboxData.current = (lightboxData.current + dir + images.length) % images.length
-  lightboxImg.style.opacity = '0'
-  setTimeout(() => {
-    updateLightbox()
-    lightboxImg.style.opacity = '1'
-  }, 150)
-}
-
-/* ===== PARALLAX (throttled) ===== */
-function initParallax() {
-  let ticking = false
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        document.querySelectorAll('.masonry-item').forEach((item) => {
-          const rect = item.getBoundingClientRect()
-          if (rect.top < window.innerHeight && rect.bottom > 0) {
-            const speed = 0.04
-            const offset = (rect.top - window.innerHeight / 2) * speed
-            const img = item.querySelector('img')
-            if (img) {
-              img.style.transform = `translateY(${offset}px) scale(1.05)`
-            }
-          }
-        })
-        ticking = false
-      })
-      ticking = true
-    }
-  }, { passive: true })
-}
-
-/* ===== SECTION REVEAL ===== */
-function initSectionReveal() {
-  document.querySelectorAll('.section-glass').forEach((el) => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.style.transform = 'translateY(0)'
-          el.style.opacity = '1'
-          observer.unobserve(el)
-        }
-      },
-      { threshold: 0.1 }
-    )
-    el.style.transform = 'translateY(40px)'
-    el.style.opacity = '0'
-    el.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1)'
-    observer.observe(el)
-  })
-}
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox || e.target === lightboxImg) closeLightbox()
+})
 
 /* ===== INIT ===== */
-document.addEventListener('DOMContentLoaded', () => {
-  loadLikes()
-  loadImages()
-  initHotSection()
+loadLikes()
+loadImages()
+initHotSection()
 
-  setTimeout(() => {
-    observeMasonry()
-  }, 200)
-
-  initParallax()
-  initSectionReveal()
-})
+setTimeout(() => {
+  observeMasonry()
+  document.querySelectorAll('.masonry-item').forEach((item, i) => {
+    setTimeout(() => item.classList.add('reveal'), i * 80)
+  })
+}, 300)
